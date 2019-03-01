@@ -1,0 +1,19 @@
+.header {
+    width: 100vw;
+    height: 7vh;
+    background-color: #ab2a19;
+    position: fixed;
+    display: flex;
+    
+    align-items: center;
+
+
+}
+.logo {
+    margin-left: 50px;
+    font-size: 30px;
+    color: #fff;
+    font-weight: 700;
+    text-transform: uppercase;
+    text-shadow: rgba(0,0,0,.01) 0 100px 100px;
+}
