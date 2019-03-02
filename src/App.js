@@ -13,25 +13,50 @@ class App extends Component {
       inventory: [],
     }
   }
+  componentDidMount(){
+    this.getProducts()
+    
+   
+  }
+  
   getProducts = () => {
     axios.get('http://localhost:5000/api/products')
     .then(response => {
         this.setState({
             inventory: response.data,
+            
         });
-        // console.log('mounting' + this.state.inventory)
+        console.log('Got products')
     })
     .catch( err => {
         console.log(err);
     });
+    
 }
+handleDelete(id){
+  axios.delete('http://localhost:5000/api/products/' + id).then((response) => {
+      console.log(response.data);
+      this.getProducts();
+
+      
+  })
+
+}
+
+
   
   render() {
     return (
       <div className="App">
         <div className='main-container'>
           <Header/>
-          <Dashboard getProducts={() => this.getProducts()}/>
+          { 
+            this.state.inventory[0] ? 
+            <Dashboard 
+            inventory={this.state.inventory} 
+            getProducts={() => this.getProducts()}
+            deleteProduct={(id) => this.handleDelete(id)}/> : 'inventory'
+          }
           <Form getProducts={() => this.getProducts}/>  
         </div>  
       </div>

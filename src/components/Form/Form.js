@@ -25,7 +25,7 @@ class Form extends Component{
         })
         
     }
-    handleSubmit(event){
+    handleSubmit(event, getProducts){
         event.preventDefault();
 
         const { product_name, product_price, image_url } = this.state;
@@ -35,6 +35,7 @@ class Form extends Component{
             product_price,
             image_url,
         }).then((res) => {
+
             console.log(res);
         }).catch(err => {
             console.error(err);
@@ -44,7 +45,9 @@ class Form extends Component{
             product_price: 0,
             image_url: '',
         })
-        this.props.getProducts();
+        getProducts();
+        
+        
 
     }
 
@@ -53,7 +56,7 @@ class Form extends Component{
     render(){
         return(
             <div>
-                <form onSubmit={event => this.handleSubmit(event)}>
+                <form onSubmit={event => this.handleSubmit(event, this.props.getProducts())}>
                     <label>
                         Product Name:
                         <input

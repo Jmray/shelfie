@@ -10,7 +10,7 @@ export default function Product(props) {
            {props.product.product_name}
            {props.product.product_price}
            <div>
-               <button onClick={() => props.handleDelete(props.product.id)}>Delete</button>
+               <button onClick={() => props.deleteProduct(props.product.id)}>Delete</button>
            </div>
         </div>
     )
