@@ -34,7 +34,7 @@ app.use(cors());
 app.get('/api/products', productsController.getAll);
 app.post('/api/products', productsController.create);
 app.delete('/api/products/:id', productsController.delete);
-// app.put('/api/products/:id', productsController.update);
+app.put('/api/products/:id', productsController.update);
 
 
 

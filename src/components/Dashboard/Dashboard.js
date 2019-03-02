@@ -12,7 +12,8 @@ export default function Dashboard(props){
                 
                 <Product 
                     deleteProduct={props.deleteProduct}
-                    product={product}/>
+                    product={product}
+                    editProduct={props.editProduct}/>
                 </div>
              
         ));

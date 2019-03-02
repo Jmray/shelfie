@@ -1,9 +1,11 @@
 import React, { Component } from 'react';
+import axios from 'axios';
+import 'bulma/css/bulma.css';
 import './App.css';
 import Dashboard from './components/Dashboard/Dashboard';
 import Form from './components/Form/Form';
 import Header from './components/Header/Header';
-import axios from 'axios';
+import routes from './routes';
 
 class App extends Component {
   constructor(){
@@ -11,6 +13,8 @@ class App extends Component {
 
     this.state = {
       inventory: [],
+      canEdit: false,
+      editID: null,
     }
   }
   componentDidMount(){
@@ -42,6 +46,21 @@ handleDelete(id){
   })
 
 }
+handleEdit(id, doneEdit){
+  
+  if(doneEdit){
+    this.setState({
+      canEdit: false,
+      editID: null,
+    })
+  }else{
+    this.setState({
+      canEdit: true,
+      editID: id,
+    });
+    console.log(id)
+  } 
+}
 
 
   
@@ -53,11 +72,16 @@ handleDelete(id){
           { 
             this.state.inventory[0] ? 
             <Dashboard 
-            inventory={this.state.inventory} 
-            getProducts={() => this.getProducts()}
-            deleteProduct={(id) => this.handleDelete(id)}/> : 'inventory'
+              inventory={this.state.inventory} 
+              getProducts={() => this.getProducts()}
+              deleteProduct={(id) => this.handleDelete(id)}
+              editProduct={(id) => this.handleEdit(id)}/> : 'inventory'
           }
-          <Form getProducts={() => this.getProducts}/>  
+          <Form 
+            getProducts={() => this.getProducts}
+            editID={this.state.editID}
+            canEdit={this.state.canEdit}
+            finishEdit={(id, finishEdit) => this.handleEdit(id, finishEdit)}/>  
         </div>  
       </div>
     );
