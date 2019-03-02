@@ -29,6 +29,14 @@ class Form extends Component{
         })
         
     }
+    handleCancel(){
+        this.setState({
+            product_name: '',
+            product_price: 0,
+            image_url: '',
+        })
+
+    }
     handleSubmit(event, getProducts){
         event.preventDefault();
         
@@ -80,6 +88,7 @@ class Form extends Component{
         return(
             <div className='box'>
                 <form className='container' onSubmit={event => this.handleSubmit(event, this.props.getProducts())}>
+                    <img src={this.state.image_url} height='200' width='200'/>
                     <label className='label'>
                         Product Name:
                         <input
@@ -107,8 +116,10 @@ class Form extends Component{
                             value={this.state.image_url} 
                             onChange={event => this.handleImageChange(event.target.value)}/>
                     </label>
-                    <button type='submit'>{this.props.canEdit === false ? "Add" : "Submit Edit"}</button>
+                    <button type='submit'>{this.props.canEdit === false ? "Add" : "Save Changes"}</button>
+                    
                 </form>
+                <button  onClick={(cb) => this.handleCancel(this.props.finishEdit(null, true))}>cancel</button>
             </div>
         )
     }

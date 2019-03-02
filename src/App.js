@@ -1,5 +1,6 @@
 import React, { Component } from 'react';
 import axios from 'axios';
+import { HashRouter as Router} from 'react-router-dom';
 import 'bulma/css/bulma.css';
 import './App.css';
 import Dashboard from './components/Dashboard/Dashboard';
@@ -66,24 +67,26 @@ handleEdit(id, doneEdit){
   
   render() {
     return (
-      <div className="App">
-        <div className='main-container'>
-          <Header/>
-          { 
-            this.state.inventory[0] ? 
-            <Dashboard 
-              inventory={this.state.inventory} 
-              getProducts={() => this.getProducts()}
-              deleteProduct={(id) => this.handleDelete(id)}
-              editProduct={(id) => this.handleEdit(id)}/> : 'inventory'
-          }
-          <Form 
-            getProducts={() => this.getProducts}
-            editID={this.state.editID}
-            canEdit={this.state.canEdit}
-            finishEdit={(id, finishEdit) => this.handleEdit(id, finishEdit)}/>  
-        </div>  
-      </div>
+      
+        <div className="App">
+          <div className='main-container'>
+            <Header/>
+            { 
+              this.state.inventory[0] ? 
+              <Dashboard 
+                inventory={this.state.inventory} 
+                getProducts={() => this.getProducts()}
+                deleteProduct={(id) => this.handleDelete(id)}
+                editProduct={(id) => this.handleEdit(id)}/> : 'inventory'
+            }
+            <Form 
+              getProducts={() => this.getProducts}
+              editID={this.state.editID}
+              canEdit={this.state.canEdit}
+              finishEdit={(id, finishEdit) => this.handleEdit(id, finishEdit)}/>  
+          </div>  
+        </div>
+      
     );
   }
 }
