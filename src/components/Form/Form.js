@@ -14,7 +14,6 @@ class Form extends Component {
             image_url: '',
             product_name: '',
             product_price: 0,
-            imageValid: false,
         }
     }
     componentDidMount() {
@@ -46,8 +45,6 @@ class Form extends Component {
         this.setState({
             image_url: value,
             imageValid: false,
-        }, () => {
-            this.checkImage(value);
         });
         console.log(this.state.image_url)
 
@@ -57,6 +54,7 @@ class Form extends Component {
             product_name: '',
             product_price: 0,
             image_url: '',
+            enabled: false
         })
 
     }
@@ -90,6 +88,10 @@ class Form extends Component {
 
     }
 
+    checkIfEnabled = (event) => {
+        event.preventDefault()
+        alert('add button has been disabled')
+    }
 
 
     render() {
@@ -97,13 +99,16 @@ class Form extends Component {
         return (
             <div className='container form-container box'>
 
-                <form onSubmit={event => this.handleSubmit(event)}>
-                    {
+                <form onSubmit={event => this.state.enabled ? this.handleSubmit(event) : this.checkIfEnabled(event)}>
+                    {/* {
                         this.state.imageValid ?
                             <img className="preview-image" src={this.state.image_url} alt="product" /> :
                             <img className="placeholder" src={'https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcTOZNL0sDN-psNGkDyevAF1x5xQ5NxSID1kGjLjk7e4o5Fq8s1WbQ'} alt="Error loading" />
-                    }
-                    {/* <img className='preview-image' src={this.state.image_url} alt="product" /> */}
+                    } */}
+                    <img className='preview-image' src={this.state.image_url} alt="product"  onError={() => {
+                        
+                        this.setState({image_url: 'https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcTOZNL0sDN-psNGkDyevAF1x5xQ5NxSID1kGjLjk7e4o5Fq8s1WbQ'})
+                    }} />
                     <label className='label' >
                         Product Name:
                         <input
@@ -128,8 +133,16 @@ class Form extends Component {
                             className='input'
                             type='text'
                             placeholder='Image Url'
-                            value={this.state.image_url}
-                            onChange={event => this.handleImageChange(event.target.value)} />
+                            // value={this.state.image_url}
+                            onChange={event => this.handleImageChange(event.target.value)} 
+                            onBlur={() => {
+                                setTimeout(() => {
+                                    this.setState({
+                                        enabled: true
+                                    })
+                                    
+                                }, 3000);
+                            }}/>
                     </label>
 
                     <button className='button' type='submit'>{!this.props.match.params.id ? "Add" : "Save Changes"}</button>
@@ -139,24 +152,6 @@ class Form extends Component {
 
             </div>
         )
-    }
-
-    checkImage() {
-        const tempImg = new Image();
-        
-        tempImg.onload = function() {
-            this.setState({
-                imageValid: true,
-            });
-        }.bind(this);
-
-        tempImg.onerror = function () {
-            this.setState({
-                imageValid: false,
-            });
-        }.bind(this);
-        
-        tempImg.src = this.state.image_url;
     }
 }
 
