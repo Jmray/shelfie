@@ -2,8 +2,9 @@
     width: 100vw;
     height: 7vh;
     background-color: #ab2a19;
-    position: fixed;
+    position: sticky;
     display: flex;
+    top: 0;
     
     align-items: center;
 
@@ -16,4 +17,7 @@
     font-weight: 700;
     text-transform: uppercase;
     text-shadow: rgba(0,0,0,.01) 0 100px 100px;
+}
+.header-link {
+    margin-left: 50px;
 }

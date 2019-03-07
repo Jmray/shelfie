@@ -1,0 +1,14 @@
+.form-container{
+    margin-top: 20px;
+    width: 30vw;
+    height: 450px;
+    display: flex;
+    justify-content: center
+}
+.preview-image,
+.placeholder {
+    height: 175px;
+    width: 300px;
+    background-size: cover;
+    display: block;
+}

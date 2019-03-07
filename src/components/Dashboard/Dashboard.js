@@ -1,31 +1,66 @@
 import React, { Component } from 'react';
 import Product from '../Product/Product';
+import axios from 'axios';
 
 
-export default function Dashboard(props){
+class Dashboard extends Component{
+    state = {
+        inventory: [],
+    }
 
-    
+    componentDidMount(){
+        this.getProducts();
+    }
+    getProducts = () => {
+        axios.get('http://localhost:5000/api/products')
+        .then(response => {
+            this.setState({
+                inventory: response.data,
+                
+            });
+            console.log('Got products')
+        })
+        .catch( err => {
+            console.log(err);
+        });
+        
+    }
+
+    deleteProduct(id, cb){
+        axios.delete('http://localhost:5000/api/products/' + id).then((response) => {
+            console.log(response.data);
+            cb();
+      
+            
+        })
+      
+      }
+      
+
+        render(){
         // console.log('render', this.state)
-        const products = props.inventory.map((product, index) => (
+        const products = this.state.inventory.map((product, index) => (
              
-                <div key={index}>
+                <div className='container' key={index}>
                 
                 <Product 
-                    deleteProduct={props.deleteProduct}
-                    product={product}
-                    editProduct={props.editProduct}/>
+                    getProducts={this.getProducts}
+                    deleteProduct={this.deleteProduct}
+                    product={product}/>
                 </div>
              
         ));
 
         return(
-            <div>
+            <div className='container'>
                 
                 {
-                    props.inventory[0] ? products : <h1>Loading...</h1>
+                    this.state.inventory ? products : <h1>Loading...</h1>
                 }
             </div>
         )
+    }
     
 }
+export default Dashboard;
 

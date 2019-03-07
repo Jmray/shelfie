@@ -32,6 +32,7 @@ app.use(cors());
 
 //Products end points
 app.get('/api/products', productsController.getAll);
+app.get('/api/products/:id', productsController.getOne);
 app.post('/api/products', productsController.create);
 app.delete('/api/products/:id', productsController.delete);
 app.put('/api/products/:id', productsController.update);

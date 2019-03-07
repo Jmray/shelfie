@@ -11,6 +11,16 @@ module.exports = {
         });
 
     },
+    getOne: (req, res) => {
+       
+        req.app.get('db').read_product([req.params.id]).then(product => {
+            res.status(200).send(product[0])
+        })
+        .catch(err => {
+            res.status(500).send('Error retrieving.');
+            console.log(err);
+        })
+    },
     create: (req, res) => {
         const {
             product_name,
