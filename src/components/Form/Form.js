@@ -14,17 +14,23 @@ class Form extends Component {
             image_url: '',
             product_name: '',
             product_price: 0,
+            enabled: true,
         }
     }
     componentDidMount() {
+
         if (this.props.match.params.id) {
             axios.get('http://localhost:5000/api/products/' + this.props.match.params.id).then(res => {
-                console.log(res.data)
+                const {
+                    product_name,
+                    product_price,
+                    image_url,
+                } = res.data;
                 this.setState({
-                    product_name: res.data.product_name,
-                    product_price: res.data.product_price,
-                    image_url: res.data.image_url,
-                })
+                    product_name,
+                    product_price,
+                    image_url,
+                });
             })
         }
     }
@@ -32,22 +38,17 @@ class Form extends Component {
     handleNameChange(value) {
         this.setState({
             product_name: value,
-        })
-
+        });
     }
     handlePriceChange(value) {
         this.setState({
             product_price: value,
-        })
-
+        });
     }
     handleImageChange(value) {
         this.setState({
             image_url: value,
-            imageValid: false,
         });
-        console.log(this.state.image_url)
-
     }
     handleCancel() {
         this.setState({
@@ -55,13 +56,16 @@ class Form extends Component {
             product_price: 0,
             image_url: '',
             enabled: false
-        })
+        });
 
     }
     handleSubmit(event) {
         event.preventDefault();
-        let image_url = this.state.image_url ? this.state.image_url : 'https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcTOZNL0sDN-psNGkDyevAF1x5xQ5NxSID1kGjLjk7e4o5Fq8s1WbQ';
+        let image_url = this.state.image_url ? this.state.image_url 
+        : 'https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcTOZNL0sDN-psNGkDyevAF1x5xQ5NxSID1kGjLjk7e4o5Fq8s1WbQ';
+
         let { product_name, product_price } = this.state;
+
         let requestPromise;
 
         if (this.props.match.params.id) {
@@ -95,21 +99,43 @@ class Form extends Component {
 
 
     render() {
-        console.log(this.state);
         return (
             <div className='container form-container box'>
 
-                <form onSubmit={event => this.state.enabled ? this.handleSubmit(event) : this.checkIfEnabled(event)}>
-                    {/* {
-                        this.state.imageValid ?
-                            <img className="preview-image" src={this.state.image_url} alt="product" /> :
-                            <img className="placeholder" src={'https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcTOZNL0sDN-psNGkDyevAF1x5xQ5NxSID1kGjLjk7e4o5Fq8s1WbQ'} alt="Error loading" />
-                    } */}
-                    <img className='preview-image' src={this.state.image_url} alt="product"  onError={() => {
-                        
-                        this.setState({image_url: 'https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcTOZNL0sDN-psNGkDyevAF1x5xQ5NxSID1kGjLjk7e4o5Fq8s1WbQ'})
-                    }} />
-                    <label className='label' >
+                <form onSubmit={event => {
+                    this.state.enabled ? this.handleSubmit(event) 
+                    : this.checkIfEnabled(event)
+                    }}>
+                    <img 
+                        className='preview-image' 
+                        src={this.state.image_url} 
+                        alt="product"  
+                        onError={() => {
+                            this.setState({image_url: 'https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcTOZNL0sDN-psNGkDyevAF1x5xQ5NxSID1kGjLjk7e4o5Fq8s1WbQ'})
+                            }}/>
+                    <label className='label'>
+                        Image URL:
+                        <input
+                            className='input'
+                            type='text'
+                            placeholder='Image Url'
+                            // value={this.state.image_url}
+                            onChange={event => this.handleImageChange(event.target.value)} 
+                            onFocus={() => {
+                                this.setState({
+                                    enabled: false,
+                                })
+                            }}
+                            onBlur={() => {
+                                setTimeout(() => {
+                                    this.setState({
+                                        enabled: true
+                                    })
+                                    
+                                }, 1500);
+                            }}/>
+                    </label>
+                    <label className='label'>
                         Product Name:
                         <input
                             className='input'
@@ -127,27 +153,22 @@ class Form extends Component {
                             value={this.state.product_price}
                             onChange={event => this.handlePriceChange(event.target.value)} />
                     </label>
-                    <label className='label'>
-                        Image URL:
-                        <input
-                            className='input'
-                            type='text'
-                            placeholder='Image Url'
-                            // value={this.state.image_url}
-                            onChange={event => this.handleImageChange(event.target.value)} 
-                            onBlur={() => {
-                                setTimeout(() => {
-                                    this.setState({
-                                        enabled: true
-                                    })
-                                    
-                                }, 3000);
-                            }}/>
-                    </label>
 
-                    <button className='button' type='submit'>{!this.props.match.params.id ? "Add" : "Save Changes"}</button>
+                    <button 
+                        className='button' 
+                        type='submit'>
+                            {
+                                !this.props.match.params.id ? "Add" 
+                                : "Save Changes"
+                            }
+                    </button>
 
-                    <button className='button' type='button' onClick={() => this.handleCancel()}>cancel</button>
+                    <button 
+                        className='button' 
+                        type='button' 
+                        onClick={() => this.handleCancel()}>
+                        cancel
+                    </button>
                 </form>
 
             </div>

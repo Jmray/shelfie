@@ -6,7 +6,7 @@ module.exports = {
             res.status(200).send(products);
         })
         .catch(err => {
-            res.status(500).send('Error with database');
+            res.status(500).send('Error retrieving.');
             console.error(err);
         });
 
@@ -28,7 +28,7 @@ module.exports = {
             image_url
         } = req.body;
         req.app.get('db').create_product([product_name, product_price, image_url]).then(() => {
-            res.status(200).send('Success')
+            res.status(201).send('Success')
         })
         .catch(err => {
             res.status(500).send('Error with Posting');
@@ -57,15 +57,12 @@ module.exports = {
             image_url,
         } = req.body;
         req.app.get('db').update_product([product_name, product_price, image_url, id]).then(() => {
-            res.status(200).send('updated')
+            res.status(202).send('updated')
         })
         .catch(err => {
             res.status(500).send('Error with updating');
             console.error(err);
         });
     }
-    
-    
-
 }
 

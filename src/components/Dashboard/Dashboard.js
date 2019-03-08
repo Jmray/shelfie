@@ -15,25 +15,19 @@ class Dashboard extends Component{
         axios.get('http://localhost:5000/api/products')
         .then(response => {
             this.setState({
-                inventory: response.data,
-                
+                inventory: response.data,  
             });
-            console.log('Got products')
         })
         .catch( err => {
             console.log(err);
-        });
-        
+        }); 
     }
 
     deleteProduct(id, cb){
         axios.delete('http://localhost:5000/api/products/' + id).then((response) => {
             console.log(response.data);
-            cb();
-      
-            
+            cb();  
         })
-      
       }
       
 
